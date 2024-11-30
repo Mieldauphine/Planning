@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Interactif 2025</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #d9ead3;
+            font-weight: bold;
+        }
+        .weekend {
+            background-color: #d9d9d9;
+        }
+        .res {
+            background-color: #b6d7a8;
+        }
+        .dp {
+            background-color: #f4cccc;
+        }
+        .neutra {
+            background-color: #ffd966;
+        }
+        .ca {
+            background-color: #a4c2f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Planning Interactif 2025</h1>
+    <p>Sélectionnez le type de jour pour chaque cellule : Travail à résidence (RES), Déplacement (DP), Neutralisation (NEUTRA), Congé annuel (CA).</p>
+
+    <table id="planning">
+        <thead>
+            <tr>
+                <th>Mois</th>
+                <th>Jour</th>
+                <th>Date</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- JavaScript will dynamically generate rows here -->
+        </tbody>
+    </table>
+
+    <script>
+        const daysOfWeekFr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+        const months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        const tableBody = document.querySelector("#planning tbody");
+
+        for (let monthIndex = 0; monthIndex < months.length; monthIndex++) {
+            const month = months[monthIndex];
+            const numDays = new Date(2025, monthIndex + 1, 0).getDate();
+
+            for (let day = 1; day <= numDays; day++) {
+                const row = document.createElement("tr");
+                const date = new Date(2025, monthIndex, day);
+                const dayOfWeek = daysOfWeekFr[date.getDay()];
+
+                // Mois
+                const monthCell = document.createElement("td");
+                monthCell.textContent = month;
+                row.appendChild(monthCell);
+
+                // Jour de la semaine
+                const dayCell = document.createElement("td");
+                dayCell.textContent = dayOfWeek;
+                if (dayOfWeek === "Samedi" || dayOfWeek === "Dimanche") {
+                    dayCell.classList.add("weekend");
+                }
+                row.appendChild(dayCell);
+
+                // Date
+                const dateCell = document.createElement("td");
+                dateCell.textContent = day;
+                row.appendChild(dateCell);
+
+                // Type (select dropdown)
+                const typeCell = document.createElement("td");
+                const select = document.createElement("select");
+                select.innerHTML = `
+                    <option value="">Sélectionnez</option>
+                    <option value="res">RES</option>
+                    <option value="dp">DP</option>
+                    <option value="neutra">NEUTRA</option>
+                    <option value="ca">CA</option>
+                `;
+                select.addEventListener("change", function() {
+                    typeCell.className = select.value;
+                });
+                typeCell.appendChild(select);
+                row.appendChild(typeCell);
+
+                tableBody.appendChild(row);
+            }
+        }
+    </script>
+</body>
+</html>
+
